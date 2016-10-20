@@ -9,7 +9,7 @@ class Heap
 		void adjust (int a[], int i, int n);
 	public:
 		Heap(int MSize);
-		Heap(Heap &myHeap);
+		Heap(const Heap &myHeap);
 		bool insert (int item);
 		bool delMax(int & item);
 		Heap operator+(Heap a);

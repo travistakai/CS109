@@ -26,10 +26,20 @@ Heap::Heap(int MSize):MaxSize(MSize)
 
 // Copy constructor of the Heap class
 // Takes in a pre-existing Heap object as a parameter and returns a Heap with the same data (aka a copy of the object)
-Heap::Heap(Heap &myHeap)
+Heap::Heap(const Heap &myHeap)
 {
-	array = myHeap.array;
-	Nel = myHeap.Nel;
+	int size = myHeap.MaxSize;
+	// printf("%i\n", size);
+	Heap passed(size);
+	passed.array = (int *) calloc(size+1,sizeof(int));
+	passed.Nel = myHeap.Nel;
+	for (int i = 1; i < size; ++i)
+	{
+		if(myHeap.array[i] != 0)
+		{
+			insert(myHeap.array[i]);
+		}
+	}
 }
 
 Heap::~Heap(){}
@@ -67,27 +77,31 @@ Heap Heap::operator+(Heap a)
 
 	for (int i = 0; i < sizeof(this->array)/4; ++i)
 	{
-		passed.insert(this->array[i]);
+		if(this->array[i] != 0)
+			passed.insert(this->array[i]);
 	}
 
 	for (int i = 0; i < sizeof(a.array)/4; ++i)
-	{
-		passed.insert(a.array[i]);
+	{	if(a.array[i] != 0)
+			passed.insert(a.array[i]);
 	}
 	return passed;
 }
 
+// Works
 Heap Heap::operator+(int a)
 {
 	this->insert(a);
 	return *this;
 }
 
-int Heap::operator[](int a)
+// Works
+int Heap::operator[](int num)
 {
-	return this->array[a];
+	return this->array[num];
 }
 
+// Needs to copy, not just point
 Heap Heap::operator=(Heap &myHeap)
 {
 	Heap passed = myHeap;
