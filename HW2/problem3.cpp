@@ -1,7 +1,10 @@
-#include "heap_lib.h"
+#include "Heap.h"
+
 
 int main()
 {
-	Heap a (1);
+	Heap *a = new Heap(1);
+	a++;
+	free(a);
 	return 0;
 }
