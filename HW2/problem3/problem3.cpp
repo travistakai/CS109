@@ -29,7 +29,6 @@ Heap::Heap(int MSize):MaxSize(MSize)
 Heap::Heap(const Heap &myHeap)
 {
 	int size = myHeap.MaxSize;
-	// printf("%i\n", size);
 	Heap passed(size);
 	passed.array = (int *) calloc(size+1,sizeof(int));
 	passed.Nel = myHeap.Nel;
@@ -70,6 +69,7 @@ bool Heap::delMax(int & item)
 		return true;
 }
 
+// Not even close to working
 Heap Heap::operator+(Heap a)
 {
 	int size = (sizeof(this->array)+sizeof(a.array))/4;
@@ -101,7 +101,7 @@ int Heap::operator[](int num)
 	return this->array[num];
 }
 
-// Needs to copy, not just point
+// Works
 Heap Heap::operator=(Heap &myHeap)
 {
 	Heap passed = myHeap;
@@ -109,9 +109,11 @@ Heap Heap::operator=(Heap &myHeap)
 }
 
 // Needs work
-Heap Heap::operator+=(auto a)
+template <typename T> 
+void operator+=(T a)
 {
-	return *this+a;
+	Heap passed= *this + a;
+	return passed;
 }
 
 // Needs work
@@ -121,4 +123,33 @@ void Heap::operator<<(Heap a)
 	{
 		std::cout << this->array[i];
 	}
+}
+
+int main()
+{
+	Heap a(20);
+
+	a.insert(13);
+	a.insert(15);
+	a.insert(12);
+
+	Heap b = a;
+
+	b += a;
+	// Heap c = b + a;
+	// b + 12;
+	// b + 21;
+	// Heap c = b + a;
+	// b.insert(20);
+
+	// b + 3;
+
+	// a.insert(19);
+	// a.insert(13);
+	// a+8;
+
+	int x = b[2];
+	printf("%i\n", x);
+
+	return 0;
 }

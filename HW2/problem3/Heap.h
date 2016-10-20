@@ -16,7 +16,8 @@ class Heap
 		Heap operator+(int a);
 		int operator[](int a);
 		Heap operator=(Heap &myHeap);
-		Heap operator+=(auto a);
+		// void operator+=(auto a);
+		template <typename T> Heap operator+=(T a);
 		void operator<<(Heap a);
 		~Heap();
 };
