@@ -8,15 +8,9 @@
 #include <cstdio>
 #include <math.h>
 
-// number |= 1 << x; Bitwise OR with 1 at position x
-// number &= ~(1 << x); Bitwise NOT AND to clear bit at position x
-// number ^= 1 << x; Bitwise toggle at position x
-// bit = (number >> x) & 1; Puts value of bit x in variable bit
-
 class InventoryScanner
 {
 	private:
-		int* productArray = (int*)calloc(32, sizeof(char)); //holds if product is present or not (using 0 or 1)
 		uint8_t* stockArray = (uint8_t*)calloc(256, sizeof(unsigned char)); //holds # of each type of product
 
 		bool productCheck(int productId, int checkType)
@@ -24,6 +18,7 @@ class InventoryScanner
 			if(checkType == 0) //check if we can insert a product
 			{
 				if(stockArray[productId] == 255)
+
 					return true; //product is at capacity
 				else
 					return false; //still room insert a product into stock
@@ -31,8 +26,7 @@ class InventoryScanner
 
 			else if(checkType == 1) //check if the product exists (has stock > 0)
 			{
-				int productPresent = (productArray[(int)floor(productId/32)] >> productId%8) & 1;
-				if(productPresent)
+				if(stockArray[productId] > 0)
 					return true;
 				else
 					return false;
@@ -40,7 +34,7 @@ class InventoryScanner
 		}
 
 	public:
-		InventoryScanner();
+		InventoryScanner(){};
 
 		void checkIn(int productId)
 		{
@@ -55,7 +49,7 @@ class InventoryScanner
 			else
 			{
 				printf("Product was inserted successfully\n");
-				stockArray[productId] += 1;
+				stockArray[productId]++;
 			}
 		}
 
@@ -69,33 +63,48 @@ class InventoryScanner
 
 			if(productCheck(productId, 1))
 			{
-				stockArray[productId] -= 1;
+				stockArray[productId]--;
 				printf("Product checked out\n");
 			}
 			else
 				printf("There is no available stock of product %i\n", productId);
 		}
 
-		void stockCount(int productId)
+		int stockCount(int productId, bool output)
 		{
-			printf("There are currently %i of product %i in stock\n", stockArray[productId], productId);
+			if(output)
+				printf("There are currently %i of product %i in stock\n", stockArray[productId], productId);
+
+			return stockArray[productId];
 		}
 
 		void availableProducts()
 		{
 			int count = 0;
-			for (int i = -1; i < 255; ++i)
+			for (int i = 0; i < 255; ++i)
 			{
-				count += productCheck(i, 1);
+				count += stockCount(i, false);
 			}
 
 			printf("There are currently %i products in stock\n", count);
 		}
 
-		~InventoryScanner();
+		// ~InventoryScanner();
 };
 
 int main()
 {
+	InventoryScanner *x = new InventoryScanner();
+	x->checkOut(12);
+	x->checkIn(12);
+	x->stockCount(12, true);
+	x->checkOut(12);
+	x->stockCount(12, true);
+	x->checkIn(12);
+	x->stockCount(12, true);
+	x->checkIn(12);
+	x->stockCount(12, true);
+	x->availableProducts();
 
+	return 0;
 }
