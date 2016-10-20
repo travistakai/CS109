@@ -1,12 +1,6 @@
-// Can have 256 (0-255) products and 256 of each product
-// Checkin/out items
-// Check if product exists (greater than 0 quantity)
-// How many items exist of product
-// How many items have stock greater than 0
+// InventoryScanner implementation and main()
+
 #include "InventoryScanner.h"
-
-
-
 
 bool InventoryScanner::productCheck(int productId, int checkType)
 {
