@@ -32,11 +32,7 @@ Heap::Heap(Heap &myHeap)
 	Nel = myHeap.Nel;
 }
 
-Heap::~Heap()
-{
-	if (array != NULL)
-		free(array);
-}
+Heap::~Heap(){}
 
 bool Heap::insert (int item)
 {
@@ -96,4 +92,19 @@ Heap Heap::operator=(Heap &myHeap)
 {
 	Heap passed = myHeap;
 	return passed;
+}
+
+// Needs work
+Heap Heap::operator+=(auto a)
+{
+	return *this+a;
+}
+
+// Needs work
+void Heap::operator<<(Heap a)
+{
+	for (int i = 0; i < sizeof(this->array)/4; ++i)
+	{
+		std::cout << this->array[i];
+	}
 }
