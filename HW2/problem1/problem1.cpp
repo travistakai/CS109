@@ -108,6 +108,8 @@ int main()
 {	
 	CardReader *x = new CardReader();
 
+	x->reserveSeat(13);
+	x->checkIn(13);
 	x->reserveSeat(12);		//successful reservation
 	x->reserveSeat(256);	//Prints error
 	x->checkIn(12);			//Successful checkin

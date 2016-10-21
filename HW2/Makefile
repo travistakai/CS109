@@ -4,17 +4,17 @@
 GPP = g++ -std=c++14
 GPPFLAGS = -O3 -ansi -Wall
 
-all: problem1 problem2 problem3
+all: p1 p2 p3
 
 #Link command:
-problem1: problem1/problem1.o
-	$(GPP) $(GPPFLAGS) problem1/problem1.o -o problem1
+p1: problem1/problem1.o
+	$(GPP) $(GPPFLAGS) problem1/problem1.o -o p1
 
-problem2: problem2/problem2.o
-	$(GPP) $(GPPFLAGS) problem2/problem2.o -o problem2
+p2: problem2/problem2.o
+	$(GPP) $(GPPFLAGS) problem2/problem2.o -o p2
 
-problem3: problem3/problem3.o
-	$(GPP) $(GPPFLAGS) problem3/problem3.o -o problem3
+p3: problem3/problem3.o
+	$(GPP) $(GPPFLAGS) problem3/problem3.o -o p3
 
 #Compilation commands:
 problem1.o: problem1/problem1.cpp
@@ -32,6 +32,9 @@ clean:
 	rm -f problem1/*.o
 	rm -f problem2/*.o
 	rm -f problem3/*.o
+	rm -f p1
+	rm -f p2
+	rm -f p3
 
 %.o: %.cc
 	g++ -c $< -o $@
