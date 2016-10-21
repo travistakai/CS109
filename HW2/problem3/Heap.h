@@ -1,3 +1,6 @@
+// Heap.h
+// Function definitions of the Heap object and all of its operators
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>

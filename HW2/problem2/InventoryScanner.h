@@ -1,6 +1,9 @@
+// InventoryScanner function declarations
+// Uses stdlib for calloc and cstdio for printf
+// Stores each item as a unint8_t since only needs to be 8 bits long
+
 #include <stdlib.h>
 #include <cstdio>
-#include <math.h>
 
 class InventoryScanner
 {

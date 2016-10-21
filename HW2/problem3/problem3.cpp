@@ -39,8 +39,10 @@ Heap::Heap(const Heap &myHeap)
 	}
 }
 
+// Heap destructor
 Heap::~Heap(){}
 
+// Inserts an int into the heap which is then adjusted
 bool Heap::insert (int item)
 {
 	int i = ++Nel;
@@ -58,6 +60,7 @@ bool Heap::insert (int item)
 	array[i] = item;
 }
 
+// Deletes top element from max heap
 bool Heap::delMax(int & item)
 {
 	if ( !Nel) { std::cout << "heap is empty" << std::endl ; return false; }
@@ -67,7 +70,7 @@ bool Heap::delMax(int & item)
 		return true;
 }
 
-// Works
+// Adds two different heaps to return a combined version with both sets of elements in order
 Heap Heap::operator+(Heap a)
 {
 	Heap passed(MaxSize + a.MaxSize);
@@ -89,7 +92,7 @@ Heap Heap::operator+(Heap a)
 	return passed;
 }
 
-// Works
+// Adds an element to the heap and returns a new copy
 Heap Heap::operator+(int a)
 {
 	Heap passed = *this;
@@ -97,75 +100,62 @@ Heap Heap::operator+(int a)
 	return passed;
 }
 
-// Works
+// Returns the element at a given position within the heap
+// which is the nth largest with input of n
 int Heap::operator[](int num)
 {
 	return this->array[num];
 }
 
-// Works
+// Assigns a heap to be a copy of a pre-existing heap
+// Used similar to the copy constructor
 void Heap::operator=(Heap &myHeap)
 {
 	Heap passed = myHeap;
 	*this = passed;
 }
 
-// Works
+// Adds an element to an already pre-existing heap
 void Heap::operator+=(int a)
 {
 	insert(a);
 }
 
+// Adds a heap to a pre-existing one while maintaining its integrity
 Heap Heap::operator+=(Heap const &myHeap)
 {
 	Heap copy = *this + myHeap;
-	std::cout << "Copy " << copy + myHeap << std::endl;
-	std::cout << "Copy " << copy + myHeap << std::endl;
-	return copy + myHeap;
-	// std::cout << "Copy" << *this << std::endl;
+	return copy;
 }
 
 
-// Needs work
+// Outputs all of the elements from a given heap
 std::ostream& operator<< (std::ostream& out, const Heap& heap) {
     for (int i = 0; i < heap.Nel+1; ++i)
     {
         out << heap.array[i] << " ";
     }
-   return out;
+   return (out << std::endl);
 }
+
 
 int main()
 {
 	Heap a(20);
 
-	a.insert(13);
-	a.insert(15);
-	a.insert(12);
+	a + 13;
+	a += 15;
+	a += 12;
 
 	Heap b(20);
-	b.insert(21);
-
+	b += 21;
 	
-	// Heap c = a;
+	Heap c = a + b;
 	a += 16;
 	a += b;
-	std::cout << a;
+	std::cout << c;
 
-
-	// b + 12;
-	// b + 21;
-	// Heap c = b + a;
-	// b.insert(20);
-
-	// b + 3;
-
-	// a.insert(19);
-	// a.insert(13);
-	// a+8;
-
-	// int x = c[1];
-	// printf("%i\n", x);
+	printf("b[1]: %i\n", b[1]);
 
 	return 0;
 }

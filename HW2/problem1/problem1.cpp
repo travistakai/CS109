@@ -1,10 +1,15 @@
+// problem1.cpp
+// CardReader implementation file
+// Uses two seperate arrays to distinguish which seats are reserved vs occupied
+// Makes use of a checkSeat function for both reserving and checking into a seat
+// Uses bit manipulation in order to minimize space usage of storing student seat info
+// 		number |= 1 << x; Bitwise OR with 1 at position x
+// 		bit = (number >> x) & 1; Puts value of bit x in variable bit
+
 #include "CardReader.h"
 
-	// number |= 1 << x; Bitwise OR with 1 at position x
-	// number &= ~(1 << x); Bitwise NOT AND to clear bit at position x
-	// number ^= 1 << x; Bitwise toggle at position x
-	// bit = (number >> x) & 1; Puts value of bit x in variable bit
-
+// CardReader default constructor
+// Assigns space for 256 seats to be reserved as well as checked into
 CardReader::CardReader()
 {
 	int studentsPresent = 0;
@@ -12,16 +17,18 @@ CardReader::CardReader()
 	seatedArray = (int*)calloc(32, sizeof(char));
 }
 
-
+// CardReader destructor
 CardReader::~CardReader(){};
 
+// seatsFilled outputs the number of students present out of 256 seats
 void CardReader::seatsFilled()
 {
 	printf("Number of seats occupied out of 256: %i\n", studentsPresent);
 }
 
 
-//checkseat will check the seat of a given student and see if that spot is available to either reserve or occupy
+// checkSeat will check the seat of a given student and see if that spot is available to either reserve or occupy
+// Can be used to reserve as well as checking in by checking specified bit of the array
 bool CardReader::checkSeat(int studentNumber, int* array)
 {
 	int taken = (array[(int)floor(studentNumber/32)] >> studentNumber%8) & 1;
@@ -32,7 +39,8 @@ bool CardReader::checkSeat(int studentNumber, int* array)
 	else
 		return false;
 }
-
+// Used to reserve a student's seat for checking into later
+// Checks that seat isnt already reserved
 void CardReader::reserveSeat(int studentNumber)
 {
 
@@ -42,17 +50,18 @@ void CardReader::reserveSeat(int studentNumber)
 		return;
 	}
 
-	if(checkSeat(studentNumber, reservedArray) == 0)
+	if(checkSeat(studentNumber, reservedArray) == 0) //Seat is not reserved if 0 is returned
 	{
-		studentsPresent++;	//total number of students has increased by 1
+		studentsPresent++;
 		reservedArray[(int)floor(studentNumber/32)] |= 1 << studentNumber%8;	//set seat to be 1 for reserved
-		// printf("%i\n", (reservedArray[(int)floor(studentNumber/32)] >> studentNumber%8) & 1);
 		printf("Seat has been reserved\n");
 	}
 	else
 		printf("Seat cannot be reserved, someone else has reserved it\n");
 };
 
+// Used to check into a seat that a student has reserved previously
+// Student cannot check into seat without a reservation
 void CardReader::checkIn(int studentNumber)
 {
 
@@ -76,6 +85,7 @@ void CardReader::checkIn(int studentNumber)
 	}
 }
 
+// Used to checkout of a seat if already checked in
 void CardReader::checkOut(int studentNumber)
 {
 	if(studentNumber > 255 || studentNumber < 0)
@@ -98,12 +108,12 @@ int main()
 {	
 	CardReader *x = new CardReader();
 
-	x->reserveSeat(12);
-	x->reserveSeat(256);
-	x->checkIn(12);
-	x->checkIn(12);
-	x->checkOut(12);
-	x->seatsFilled();
+	x->reserveSeat(12);		//successful reservation
+	x->reserveSeat(256);	//Prints error
+	x->checkIn(12);			//Successful checkin
+	x->checkIn(12);			//Prints error, already checked in
+	x->checkOut(12);		//Successful checkout
+	x->seatsFilled();		//Prints # seats filled
 
 	free(x);
 
