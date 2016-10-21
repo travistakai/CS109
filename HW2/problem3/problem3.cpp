@@ -28,11 +28,9 @@ Heap::Heap(int MSize):MaxSize(MSize)
 // Takes in a pre-existing Heap object as a parameter and returns a Heap with the same data (aka a copy of the object)
 Heap::Heap(const Heap &myHeap)
 {
-	int size = myHeap.MaxSize;
-	Heap passed(size);
-	passed.array = (int *) calloc(size+1,sizeof(int));
-	passed.Nel = myHeap.Nel;
-	for (int i = 1; i < size; ++i)
+	MaxSize = myHeap.MaxSize;
+	array = (int *) calloc(MaxSize,sizeof(int));
+	for (int i = 1; i < MaxSize; ++i)
 	{
 		if(myHeap.array[i] != 0)
 		{
@@ -69,21 +67,24 @@ bool Heap::delMax(int & item)
 		return true;
 }
 
-// Not even close to working
+// Works
 Heap Heap::operator+(Heap a)
 {
-	int size = (sizeof(this->array)+sizeof(a.array))/4;
-	Heap passed(size);
+	Heap passed(MaxSize + a.MaxSize);
 
-	for (int i = 0; i < sizeof(this->array)/4; ++i)
+	int max = (MaxSize > a.MaxSize ? MaxSize : a.MaxSize);
+
+	for (int i = 0; i < max; ++i)
 	{
-		if(this->array[i] != 0)
-			passed.insert(this->array[i]);
-	}
+		if(i < MaxSize && array[i] != 0)
+		{
+			passed.insert(array[i]);
+		}
 
-	for (int i = 0; i < sizeof(a.array)/4; ++i)
-	{	if(a.array[i] != 0)
+		if(i < a.MaxSize && a.array[i] != 0)
+		{
 			passed.insert(a.array[i]);
+		}
 	}
 	return passed;
 }
@@ -91,8 +92,9 @@ Heap Heap::operator+(Heap a)
 // Works
 Heap Heap::operator+(int a)
 {
-	this->insert(a);
-	return *this;
+	Heap passed = *this;
+	passed.insert(a);
+	return passed;
 }
 
 // Works
@@ -102,27 +104,35 @@ int Heap::operator[](int num)
 }
 
 // Works
-Heap Heap::operator=(Heap &myHeap)
+void Heap::operator=(Heap &myHeap)
 {
 	Heap passed = myHeap;
-	return passed;
+	*this = passed;
 }
 
-// Needs work
-template <typename T> 
-void operator+=(T a)
+// Works
+void Heap::operator+=(int a)
 {
-	Heap passed= *this + a;
-	return passed;
+	insert(a);
 }
 
-// Needs work
-void Heap::operator<<(Heap a)
+Heap Heap::operator+=(Heap const &myHeap)
 {
-	for (int i = 0; i < sizeof(this->array)/4; ++i)
-	{
-		std::cout << this->array[i];
-	}
+	Heap copy = *this + myHeap;
+	std::cout << "Copy " << copy + myHeap << std::endl;
+	std::cout << "Copy " << copy + myHeap << std::endl;
+	return copy + myHeap;
+	// std::cout << "Copy" << *this << std::endl;
+}
+
+
+// Needs work
+std::ostream& operator<< (std::ostream& out, const Heap& heap) {
+    for (int i = 0; i < heap.Nel+1; ++i)
+    {
+        out << heap.array[i] << " ";
+    }
+   return out;
 }
 
 int main()
@@ -133,10 +143,16 @@ int main()
 	a.insert(15);
 	a.insert(12);
 
-	Heap b = a;
+	Heap b(20);
+	b.insert(21);
 
-	b += a;
-	// Heap c = b + a;
+	
+	// Heap c = a;
+	a += 16;
+	a += b;
+	std::cout << a;
+
+
 	// b + 12;
 	// b + 21;
 	// Heap c = b + a;
@@ -148,8 +164,8 @@ int main()
 	// a.insert(13);
 	// a+8;
 
-	int x = b[2];
-	printf("%i\n", x);
+	// int x = c[1];
+	// printf("%i\n", x);
 
 	return 0;
 }

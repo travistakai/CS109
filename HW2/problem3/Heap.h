@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+
 class Heap
 {
 	private:
@@ -15,9 +16,9 @@ class Heap
 		Heap operator+(Heap a);
 		Heap operator+(int a);
 		int operator[](int a);
-		Heap operator=(Heap &myHeap);
-		// void operator+=(auto a);
-		template <typename T> Heap operator+=(T a);
-		void operator<<(Heap a);
+		void operator=(Heap &myHeap);
+		void operator+=(int a);
+		Heap operator+=(Heap const &myHeap);
+		friend std::ostream &operator<< (std::ostream &output, const Heap &heap);
 		~Heap();
 };

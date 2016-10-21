@@ -1,6 +1,5 @@
 #include "CardReader.h"
 
-
 	// number |= 1 << x; Bitwise OR with 1 at position x
 	// number &= ~(1 << x); Bitwise NOT AND to clear bit at position x
 	// number ^= 1 << x; Bitwise toggle at position x
